@@ -10,11 +10,11 @@ import torch.optim as optim
 from dataset_loader_v2_wo_quat import dataset_loader
 
 # sys.path.append("./libs/")
-from libs.convTBPTT_rep import TBPTT_rep_trainer  # TODO
-from ModelCode.data import MultimodalDataset  # TODO
-from ModelCode.model import ConvTAiRNNv2, ConvTAiRNNv4  # TODO
-from ModelCode.utils import EarlyStopping  # TODO
+from libs.convTBPTT_rep import TBPTT_rep_trainer
+from ModelCode.data import MultimodalDataset
+from ModelCode.model import ConvTAiRNNv2, ConvTAiRNNv4
 from ModelCode.utils import (
+    EarlyStopping,
     check_args,
     load_checkpoint,
     load_model,
@@ -68,7 +68,7 @@ os.makedirs(epoch_ckpt_dir, exist_ok=True)
 # データセット
 # dataset_root_dir = "/work/gn45/n45002/savedata/traindata_20251124_comb/"
 # dataset_root_dir = "/work/gn45/n45002/savedata/traindata_20250930_v2/"
-dataset_root_dir = "/work/gn45/n45002/savedata/traindata_20251213_v1/"
+dataset_root_dir = "./dummy_dataset/"
 folder_names = sorted([name for name in os.listdir(dataset_root_dir) if not name.startswith(".")])
 
 # decrement
@@ -147,7 +147,6 @@ test_loader = torch.utils.data.DataLoader(
 del images
 del joints
 
-# TODO:argsのmodelから選択できるようにする
 ModelClass = load_model(model_name="TAiRNNv2", class_name="TAiRNNv2")
 model = ConvTAiRNNv4(
     rec_dim=args.rec_dim,
@@ -159,7 +158,6 @@ model = ConvTAiRNNv4(
     im_size=[args.im_size, args.im_size],
 )
 
-# TODO:コード妥当性の確認
 # torch.compile makes PyTorch code run faster
 if args.compile:
     torch.set_float32_matmul_precision("high")
